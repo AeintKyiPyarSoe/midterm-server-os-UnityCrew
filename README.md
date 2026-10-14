@@ -71,3 +71,5 @@ During troubleshooting, the team identified four configuration or service issues
 2. The api DNS A record pointed to the wrong IP address.
 
 3. DHCP advertised the public DNS resolver 8.8.8.8 instead of the internal DNS server.
+
+4. A firewall rule blocked incoming UDP traffic on port 53, preventing DNS queries from reaching the server.
