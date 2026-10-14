@@ -150,3 +150,78 @@ OK
 - **Found/proved by:** Khun Maung Aye
 
 ---
+
+## Fault 3 — DHCP Advertised the Wrong DNS Server
+
+- **Symptom (what we observed):** The client received a lease, but the checker reported that DHCP was advertising 8.8.8.8 instead of `192.168.19.10`.
+
+- **Hypothesis (what we suspected and why):** The domain-name-servers option in the DHCP configuration was wrong. The client would not use the company's DNS server.
+
+- **Proof (the command that confirmed the cause):**
+
+  
+bash
+  cat /etc/dhcp/dhcpd.conf
+  grep -n "domain-name-servers" /etc/dhcp/dhcpd.conf
+  
+
+
+  **Actual output (relevant lines):**
+
+  
+text
+  subnet 192.168.19.0 netmask 255.255.255.0 {
+      range 192.168.19.104 192.168.19.144;
+      option routers 192.168.19.1;
+      option domain-name-servers 8.8.8.8;
+  }
+  8:  option domain-name-servers 8.8.8.8;
+  
+
+
+  **Initial checker output:**
+
+  
+text
+  [   0/3 ] C9   DHCP advertises 8.8.8.8, expected the company DNS 192.168.19.10 -- this is the integration the whole project is about
+  
+
+
+- **Fix (what we changed):** We changed the DHCP option to advertise the company's DNS server and restarted DHCP.
+
+  
+bash
+  sed -i 's/option domain-name-servers 8.8.8.8;/option domain-name-servers 192.168.19.10;/' /etc/dhcp/dhcpd.conf
+  dhcpd -t -cf /etc/dhcp/dhcpd.conf
+  systemctl restart isc-dhcp-server
+  systemctl is-active isc-dhcp-server
+  
+
+
+- **Confirmation (output showing it now works):** The DHCP syntax test completed without an error, and the service was active.
+
+  **Actual output (relevant lines):**
+
+  
+text
+  Internet Systems Consortium DHCP Server 4.4.3-P1
+  Config file: /etc/dhcp/dhcpd.conf
+  Database file: /var/lib/dhcp/dhcpd.leases
+  PID file: /var/run/dhcpd.pid
+  active
+  
+
+
+  The final checker confirmed that the actual client received the correct DNS server:
+
+  
+text
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [   3/3 ] C9   DHCP advertises the company DNS (192.168.19.10)
+  [   3/3 ] C11  client resolves www via the leased resolver
+  
+
+
+- **Found/proved by:** Htet Soe Lin
+
+---
