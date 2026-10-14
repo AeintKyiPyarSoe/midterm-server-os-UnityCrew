@@ -40,3 +40,4 @@ The objective was to restore correct DNS resolution and DHCP configuration so th
 | ------------------------------- | ---------------- | ---------------------------------------------------- |
 | Aeint Kyi Pyar Soe - 6705140003 | @AeintKyiPyarSoe | Setup overview, test results & DNS zone file problem |
 | Khun Maung Aye - 6705140019     | @KhunMaungAye    | API A record problem and DNS settings                |
+| Htet Soe Lin - 6705140023 | @Tyzon22 | DHCP DNS problem and DHCP settings |
