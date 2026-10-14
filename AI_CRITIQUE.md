@@ -124,4 +124,3 @@ The initial checker scored **11/25**. After repairing the zone path and removing
 - **Where an AI genuinely helped:** ChatGPT explained the DNS timeout, suggested specific inspection commands, and helped organize the troubleshooting evidence and documents. Its firewall guidance was consistent with what we found in `iptables`.
 - **What we learned about trusting AI to diagnose a live system it cannot see:** AI suggestions are a starting point, not evidence. We still need to check the files, run commands, and verify client behavior. The final checker result of **25/25** shows that the tested lab requirements passed, while the incident log shows how we got there.
 
-**Before submitting:** Replace the “To verify” cells with each member's real AI replies and confirm Gemini use. Keep the tool declaration accurate and have members review the work attributed to them.
