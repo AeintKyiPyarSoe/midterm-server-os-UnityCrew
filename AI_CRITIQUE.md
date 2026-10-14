@@ -31,3 +31,11 @@ Our incident log records how we checked the live system and verified the faults.
 4. An iptables INPUT rule dropped UDP port 53 DNS packets.
 
 The initial checker scored **11/25**. After repairing the zone path and removing the firewall rule, it scored **18.25/25**, showing that the incorrect A record and DHCP DNS setting still needed fixing. The final score was **25/25**. 
+
+## Part 3c: Putting the AIs to the test
+
+We gave the following to ChatGPT and Gemini:
+
+| Fault (in our words) | We found it? | ChatGPT | Gemini | Was each AI actually right? |
+| --- | --- | --- | --- | --- |
+| BIND pointed to a missing zone file | Yes; confirmed with `named-checkconf -z` | **To verify:** paste or summarize the actual response to Aeint's prompt | **To verify:** paste or summarize the actual response | A correct suggestion fixes `named.conf.local`; after repair the zone loaded. Do not attribute the fix to an AI without its response. |
