@@ -73,3 +73,19 @@ The initial checker scored **11/25**. After repairing the zone path and removing
 > Open /etc/dhcp/dhcpd.conf and change option domain-name-servers 8.8.8.8; to `option domain-name-servers 192.168.19.10;`. Keep the existing pool and gateway. Test with `dhcpd -t -cf /etc/dhcp/dhcpd.conf`, restart `isc-dhcp-server`, and run the checker again to see what DNS server the client receives.
 
 **Our evaluation:** The suggested setting is correct. The initial checker C9 reported `DHCP advertises 8.8.8.8`; after editing the configuration, the service remained active and C9 reported `DHCP advertises the company DNS (192.168.19.10)`. This is a sample response until Htet confirms his actual ChatGPT conversation.
+
+### 4. Thida Khaing: DNS query timeout and firewall (ChatGPT and Gemini)
+
+**Prompt for both tools:**
+
+> BIND says `active (running)`, but dig @192.168.19.10 ns1.novapeak.lab A +short keeps timing out. What should I check next? I don't want to delete all firewall rules.
+
+**ChatGPT response (documented in our conversation, summarized):**
+
+> Check iptables -L INPUT -n -v --line-numbers for a DROP rule on UDP port 53. If the matching rule exists, remove that specific rule using `iptables -D INPUT -p udp --dport 53 -j DROP`. Then test dig again from the server and the client namespace. Also check BIND and its configuration if the timeout continues.
+
+**Gemini response :**
+
+> Verify whether named listens on the server address with ss -lntup and whether the firewall drops port 53. If a rule blocks DNS queries, remove only the matching rule, then check the response from the client using `dig`.
+
+**Our evaluation:** The actual terminal output showed DROP ... udp dpt:53 with 3 packets counted. After deleting the rule, iptables -S INPUT showed only `-P INPUT ACCEPT`, and dig returned `192.168.19.10`. The ChatGPT suggestion was appropriate and was verified in the lab. The Gemini text remains an example, not a recorded response.
