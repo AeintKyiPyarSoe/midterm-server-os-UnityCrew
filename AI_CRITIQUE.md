@@ -18,5 +18,6 @@
 | Aeint Kyi Pyar Soe (@AeintKyiPyarSoe) | Setup, tests, missing DNS zone file | ChatGPT + Gemini              | “My `named-checkconf -z` says `/etc/bind/db.MISSING` cannot be found, but `db.novapeak.lab` exists. What should I check and how do I fix it?” |
 | Khun Maung Aye (@KhunMaungAye)        | API A record and DNS settings       | Gemini                        | “`api.novapeak.lab` resolves to `192.168.19.1`, but it should be `192.168.19.40`. Which DNS file do I edit and how can I test the change?”    |
 | Htet Soe Lin (@Tyzon22) | DHCP DNS and network settings | ChatGPT | “The client gets an IP address, but the checker says DHCP gives it DNS `8.8.8.8`. How do I make it use our DNS server `192.168.19.10`?” |
+| Thida Khaing (@Thida-Khaing-may) | Firewall and troubleshooting | ChatGPT + Gemini | “BIND is running, but dig @192.168.19.10 times out. I found a DROP rule for UDP port 53. How do I prove it's the problem and remove only that rule?” |
 | Kaung Khant Htoo (@kxkhantx) | Final tests, documentation, submission | ChatGPT + Gemini | “Our checker is now 25/25. What does that prove about DNS and DHCP, and what should we still include in our GitHub submission?” |
 
