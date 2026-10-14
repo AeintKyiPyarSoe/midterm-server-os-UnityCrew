@@ -34,8 +34,18 @@ The initial checker scored **11/25**. After repairing the zone path and removing
 
 ## Part 3c: Putting the AIs to the test
 
-We gave the following to ChatGPT and Gemini:
+### 1. Aeint Kyi Pyar Soe: Missing DNS zone file (ChatGPT and Gemini)
 
-| Fault (in our words) | We found it? | ChatGPT | Gemini | Was each AI actually right? |
-| --- | --- | --- | --- | --- |
-| BIND pointed to a missing zone file | Yes; confirmed with `named-checkconf -z` | **To verify:** paste or summarize the actual response to Aeint's prompt | **To verify:** paste or summarize the actual response | A correct suggestion fixes `named.conf.local`; after repair the zone loaded. Do not attribute the fix to an AI without its response. |
+**Prompt for both tools:**
+
+> I ran `named-checkconf -z` and got `loading from master file /etc/bind/db.MISSING failed: file not found`. But I can see `db.novapeak.lab` in `/etc/bind/`. What am I supposed to change? How can I check that I fixed it?
+
+**ChatGPT response:**
+
+> The zone definition is pointing to the wrong file. Open `/etc/bind/named.conf.local` and change the forward zone's `file` path to `/etc/bind/db.novapeak.lab`. Run `named-checkconf -z` and `named-checkzone novapeak.lab /etc/bind/db.novapeak.lab`, then restart `named`.
+
+**Gemini response:**
+
+> Check `named.conf.local` for the `novapeak.lab` zone. The declared file must match the actual zone file name. Update `db.MISSING` to `db.novapeak.lab`, validate the configuration, and reload BIND.
+
+**Our evaluation:** Both sample suggestions address the actual cause. The original `named-checkconf -z` showed the missing-file error. After fixing the path, it reported `zone novapeak.lab/IN: loaded serial 2024010101`, and `named-checkzone` returned `OK`. This validated the proposed fix, but it does not verify either sample AI response was actually given.
