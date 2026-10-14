@@ -75,3 +75,5 @@ During troubleshooting, the team identified four configuration or service issues
 4. A firewall rule blocked incoming UDP traffic on port 53, preventing DNS queries from reaching the server.
 
 The team corrected the zone-file reference, updated the api record to 192.168.19.40, configured DHCP to advertise 192.168.19.10, and removed the blocking firewall rule.
+
+See INCIDENT_LOG.md for the troubleshooting details and validation commands.
