@@ -99,3 +99,47 @@ See INCIDENT_LOG.md for the troubleshooting details and validation commands.
 - Domain name: novapeak.lab
 - Advertised DNS server: 192.168.19.10
 - Server interface: lan0
+
+## 6. Validation and Evidence
+
+The team used configuration checks and the official build-phase checker to verify the repairs.
+
+Commands used during validation included:
+
+bash
+named-checkconf -z
+dhcpd -t -cf /etc/dhcp/dhcpd.conf
+iptables -L INPUT -v -n --line-numbers
+python3 /root/grading/check_lab.py --group lab01 --phase build
+
+The final checker output reported that checks C1–C11 passed, with a score of **25.0/25.0**.
+
+Evidence files:
+
+- checker_result.txt — saved checker output.
+- session.log — terminal session record, including troubleshooting attempts.
+- fixed-configs/ — copies of the final configuration files.
+- INCIDENT_LOG.md — problems, causes, repairs, and verification.
+- AI_CRITIQUE.md — comparison of the AI tools actually used and how their suggestions were verified.
+
+## 7. AI Assistance and Verification
+
+AI tools may be used to explain configuration directives, suggest diagnostic commands, and help organize documentation. However, the team is responsible for checking every suggestion before applying it.
+
+The team should record the actual AI tools used, their relevant suggestions, what was tested, and which recommendations were accepted or rejected. Refer to AI_CRITIQUE.md for the evidence-based comparison.
+
+## 8. Final Submission Checklist
+
+- [ X ] All six members' real names, student IDs, and GitHub usernames are included.
+- [ X ] Each member's contribution is described accurately.
+- [ X ] INCIDENT_LOG.md explains the real troubleshooting process.
+- [ X ] AI_CRITIQUE.md contains actual tool responses and verification evidence.
+- [ X ] checker_result.txt contains the final successful checker output.
+- [ X ] session.log preserves the troubleshooting history.
+- [ X ] All six final configuration files are included in `fixed-configs/`.
+- [ X ] The repository is reviewed and pushed to GitHub.
+- [ X ] The instructor's group-size requirement has been confirmed because the team has six members.
+
+## 9. Conclusion
+
+The UnityCrew team repaired the DNS and DHCP configuration for the novapeak.lab environment. The final build-phase checker passed all eleven checks and awarded 25.0/25.0. The repository preserves the final configurations, checker evidence, terminal history, and supporting documentation for review.
