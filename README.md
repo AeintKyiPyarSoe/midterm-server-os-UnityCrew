@@ -5,12 +5,12 @@
 - **Group name:** Unity Crew
 
 - **Members:**
-  Aeint Kyi Pyar Soe – Nicole (6705140003),
-  Khun Maung Aye – CK (6705140019),
-  Htet Soe Lin – Tyzon (6705140023),
-  Thida Khaing – May (6705140024),
-  Kaung Khant Htoo – Melly (6705140027),
-  Lapatrada Tusitanond - Mingie (6705140060)
+  * Aeint Kyi Pyar Soe – Nicole (6705140003)
+  * Khun Maung Aye – CK (6705140019)
+  * Htet Soe Lin – Tyzon (6705140023)
+  * Thida Khaing – May (6705140024)
+  * Kaung Khant Htoo – Melly (6705140027)
+  * Lapatrada Tusitanond – Mingie (6705140060)
   
 - **Company:** NovaPeak
 - **Domain:** `novapeak.lab`
