@@ -90,3 +90,12 @@ See INCIDENT_LOG.md for the troubleshooting details and validation commands.
 - `www`: 192.168.19.20
 - `mail`: 192.168.19.30
 - `api`: 192.168.19.40
+
+### DHCP
+
+- Subnet: 192.168.19.0/24
+- Lease pool: `192.168.19.104`–`192.168.19.144`
+- Gateway: 192.168.19.1
+- Domain name: novapeak.lab
+- Advertised DNS server: 192.168.19.10
+- Server interface: lan0
