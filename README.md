@@ -77,3 +77,16 @@ During troubleshooting, the team identified four configuration or service issues
 The team corrected the zone-file reference, updated the api record to 192.168.19.40, configured DHCP to advertise 192.168.19.10, and removed the blocking firewall rule.
 
 See INCIDENT_LOG.md for the troubleshooting details and validation commands.
+
+## 5. Final Configuration Summary
+
+### DNS
+
+- Domain: novapeak.lab
+- DNS server: 192.168.19.10
+- Forward zone: /etc/bind/db.novapeak.lab
+- Reverse zone: /etc/bind/db.novapeak.lab.rev
+- `ns1`: 192.168.19.10
+- `www`: 192.168.19.20
+- `mail`: 192.168.19.30
+- `api`: 192.168.19.40
