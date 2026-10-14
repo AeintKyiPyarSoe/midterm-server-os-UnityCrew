@@ -10,7 +10,8 @@
   Htet Soe Lin – Tyzon (6705140023),
   Thida Khaing – May (6705140024),
   Kaung Khant Htoo – Melly (6705140027),
-  Lapatrada Tusitanond - Mingie (6705140060),
+  Lapatrada Tusitanond - Mingie (6705140060)
+  
 - **Company:** NovaPeak
 - **Domain:** `novapeak.lab`
 
@@ -64,7 +65,7 @@ midterm-server-os-UnityCrew/
 
 ## 4. Main Problems Identified
 
-During troubleshooting, the team identified four configuration or service issues:
+During troubleshooting, our team identified four configuration or service issues:
 
 1. The forward DNS zone referenced a missing file, /etc/bind/db.MISSING.
 
@@ -74,7 +75,7 @@ During troubleshooting, the team identified four configuration or service issues
 
 4. A firewall rule blocked incoming UDP traffic on port 53, preventing DNS queries from reaching the server.
 
-The team corrected the zone-file reference, updated the api record to 192.168.19.40, configured DHCP to advertise 192.168.19.10, and removed the blocking firewall rule.
+Our team corrected the zone-file reference, updated the api record to 192.168.19.40, configured DHCP to advertise 192.168.19.10, and removed the blocking firewall rule.
 
 See INCIDENT_LOG.md for the troubleshooting details and validation commands.
 
@@ -102,9 +103,9 @@ See INCIDENT_LOG.md for the troubleshooting details and validation commands.
 
 ## 6. Validation and Evidence
 
-The team used configuration checks and the official build-phase checker to verify the repairs.
+After fixing the problems, we checked the DNS and DHCP configurations to make sure everything was working correctly. We also ran the official checker to confirm that the client could receive an IP address and resolve the company's hostnames.
 
-Commands used during validation included:
+We used the following commands:
 
 bash
 named-checkconf -z
@@ -112,21 +113,23 @@ dhcpd -t -cf /etc/dhcp/dhcpd.conf
 iptables -L INPUT -v -n --line-numbers
 python3 /root/grading/check_lab.py --group lab01 --phase build
 
-The final checker output reported that checks C1–C11 passed, with a score of **25.0/25.0**.
+The final checker showed that all checks from C1 to C11 passed, giving us a score of **25.0/25.0**.
 
-Evidence files:
+We saved the following files as evidence of our work:
 
-- checker_result.txt — saved checker output.
-- session.log — terminal session record, including troubleshooting attempts.
-- fixed-configs/ — copies of the final configuration files.
-- INCIDENT_LOG.md — problems, causes, repairs, and verification.
-- AI_CRITIQUE.md — comparison of the AI tools actually used and how their suggestions were verified.
+- **checker_result.txt:** Shows our final checker results.
+- **session.log:** Records the commands we ran and the troubleshooting process.
+- **fixed-configs/:** Contains the corrected DNS and DHCP configuration files.
+- **INCIDENT_LOG.md:** Explains the problems we found, how we fixed them, and how we confirmed the results.
+- **AI_CRITIQUE.md:** Explains how we used AI tools and evaluated their suggestions.
 
 ## 7. AI Assistance and Verification
 
-AI tools may be used to explain configuration directives, suggest diagnostic commands, and help organize documentation. However, the team is responsible for checking every suggestion before applying it.
+We used AI tools to help us understand some DNS and DHCP problems, find useful troubleshooting commands, and organize our documentation.
 
-The team should record the actual AI tools used, their relevant suggestions, what was tested, and which recommendations were accepted or rejected. Refer to AI_CRITIQUE.md for the evidence-based comparison.
+However, we did not rely only on AI suggestions. We checked the configuration files, tested the commands, and used the official checker to confirm that our fixes worked.
+
+We also compared the AI responses to see which suggestions were useful, correct, or needed further checking. The details of our AI usage and comparison are included in **AI_CRITIQUE.md**.
 
 ## 8. Final Submission Checklist
 
@@ -142,4 +145,4 @@ The team should record the actual AI tools used, their relevant suggestions, wha
 
 ## 9. Conclusion
 
-The UnityCrew team repaired the DNS and DHCP configuration for the novapeak.lab environment. The final build-phase checker passed all eleven checks and awarded 25.0/25.0. The repository preserves the final configurations, checker evidence, terminal history, and supporting documentation for review.
+Our team repaired the DNS and DHCP configuration for the novapeak.lab environment. The final build-phase checker passed all eleven checks and awarded 25.0/25.0. The repository preserves the final configurations, checker evidence, terminal history, and supporting documentation for review.
