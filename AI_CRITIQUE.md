@@ -61,3 +61,15 @@ The initial checker scored **11/25**. After repairing the zone path and removing
 > Check the forward zone file `/etc/bind/db.novapeak.lab`. Change the api A record from 192.168.19.1 to `192.168.19.40`. Increase the zone serial number, validate with `named-checkzone`, restart BIND, and query the hostname again with `dig`.
 
 **Our evaluation:** This advice matches the issue. The actual dig @192.168.19.10 api.novapeak.lab A +short output before repair was `192.168.19.1`. After the change and service restart, the query returned `192.168.19.40`. The comparison response still needs confirmation from Khun's Gemini history.
+
+### 3. Htet Soe Lin: Wrong DNS server given by DHCP (ChatGPT)
+
+**Prompt:**
+
+> The client got an IP from DHCP, but the checker says it is using 8.8.8.8 for DNS. We have our own DNS server at `192.168.19.10`. How can I fix DHCP without changing the other network settings?
+
+**ChatGPT response :**
+
+> Open /etc/dhcp/dhcpd.conf and change option domain-name-servers 8.8.8.8; to `option domain-name-servers 192.168.19.10;`. Keep the existing pool and gateway. Test with `dhcpd -t -cf /etc/dhcp/dhcpd.conf`, restart `isc-dhcp-server`, and run the checker again to see what DNS server the client receives.
+
+**Our evaluation:** The suggested setting is correct. The initial checker C9 reported `DHCP advertises 8.8.8.8`; after editing the configuration, the service remained active and C9 reported `DHCP advertises the company DNS (192.168.19.10)`. This is a sample response until Htet confirms his actual ChatGPT conversation.
