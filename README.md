@@ -46,6 +46,7 @@ The objective was to restore correct DNS resolution and DHCP configuration so th
 
 ## 3. Repository Structure
 
+```text
 midterm-server-os-UnityCrew/
 ├── README.md
 ├── INCIDENT_LOG.md
@@ -59,6 +60,7 @@ midterm-server-os-UnityCrew/
     ├── isc-dhcp-server
     ├── named.conf.local
     └── named.conf.options
+```
 
 ## 4. Main Problems Identified
 
