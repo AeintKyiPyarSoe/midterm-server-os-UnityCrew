@@ -309,7 +309,7 @@ python3 /root/grading/check_lab.py --group lab01 --phase build
 
 **Actual final checker output:**
 
-text
+```text
   [   2/2 ] C4   named-checkconf -z clean; named-checkzone clean
   [   2/2 ] C5   dhcpd -t clean; service running
   [   2/2 ] C1   named is authoritative for novapeak.lab and reachable from the client.
@@ -323,6 +323,7 @@ text
   [   3/3 ] C11  client resolves www via the leased resolver
   --------------------------------------------------
   TOTAL: 25.0 / 25
+```
 
 **Additional client test:**
 
