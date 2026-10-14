@@ -2,12 +2,12 @@
 
 **Team:** UnityCrew  
 **Members:**
-  Aeint Kyi Pyar Soe – Nicole (6705140003),
-  Khun Maung Aye – CK (6705140019),
-  Htet Soe Lin – Tyzon (6705140023),
-  Thida Khaing – May (6705140024),
-  Kaung Khant Htoo – Melly (6705140027),
-  Lapatrada Tusitanond - Mingie (6705140060)
+Aeint Kyi Pyar Soe – Nicole (6705140003),
+Khun Maung Aye – CK (6705140019),
+Htet Soe Lin – Tyzon (6705140023),
+Thida Khaing – May (6705140024),
+Kaung Khant Htoo – Melly (6705140027),
+Lapatrada Tusitanond - Mingie (6705140060)
 
 **Company / domain:** novapeak.lab  
 **DNS server:** 192.168.19.10  
@@ -90,5 +90,63 @@ TOTAL: 11.0 / 25
   ```
 
 - **Found/proved by:** Aeint Kyi Pyar Soe
+
+---
+
+## Fault 2 — Incorrect api A Record
+
+- **Symptom (what we observed):** After fixing the zone path and DNS connectivity, api.novapeak.lab still resolved to 192.168.19.1 instead of `192.168.19.40`.
+
+- **Hypothesis (what we suspected and why):** The api A record was set to the wrong IP address in the forward zone file.
+
+- **Proof (the command that confirmed the cause):**
+
+bash
+cat /etc/bind/db.novapeak.lab
+dig @192.168.19.10 api.novapeak.lab A +short
+
+**Actual output (relevant lines):**
+
+text
+api IN A 192.168.19.1
+192.168.19.1
+
+The intermediate checker showed:
+
+text
+[2.25/3 ] C2 api expected 192.168.19.40 got ['192.168.19.1']
+TOTAL: 18.25 / 25
+
+- **Fix (what we changed):** We corrected the A record and increased the zone serial.
+
+bash
+sed -i 's/api IN A 192.168.19.1$/api IN A 192.168.19.40/' /etc/bind/db.novapeak.lab
+sed -i 's/2024010101/2026101401/' /etc/bind/db.novapeak.lab
+named-checkzone novapeak.lab /etc/bind/db.novapeak.lab
+systemctl restart named
+
+- **Confirmation (output showing it now works):**
+
+bash
+dig @192.168.19.10 ns1.novapeak.lab A +short
+dig @192.168.19.10 www.novapeak.lab A +short
+dig @192.168.19.10 mail.novapeak.lab A +short
+dig @192.168.19.10 api.novapeak.lab A +short
+
+**Actual output (in order):**
+
+text
+192.168.19.10
+192.168.19.20
+192.168.19.30
+192.168.19.40
+
+**Zone validation output:**
+
+text
+zone novapeak.lab/IN: loaded serial 2026101401
+OK
+
+- **Found/proved by:** Khun Maung Aye
 
 ---
