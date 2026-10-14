@@ -345,6 +345,5 @@ The client also had the DHCP address 192.168.19.104/24 on `cli0`. All checks in 
 - session.log — recorded commands, initial errors, fixes, and final results.
 - fixed-configs/ — the final DNS and DHCP configuration files.
 
-**Before submission:** Replace each Found/proved by placeholder with the actual group member who performed that work. Add the six members' real names at the top. Do not attribute commands to members who did not perform them.
 
 **Verified By:** Kaung Khant Htoo
