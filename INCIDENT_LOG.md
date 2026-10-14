@@ -299,3 +299,51 @@ text
 - **Found/proved by:** Thida Khaing
 
 ---
+
+## Final Validation
+
+**Checker command:**
+
+bash
+python3 /root/grading/check_lab.py --group lab01 --phase build
+
+**Actual final checker output:**
+
+text
+  [   2/2 ] C4   named-checkconf -z clean; named-checkzone clean
+  [   2/2 ] C5   dhcpd -t clean; service running
+  [   2/2 ] C1   named is authoritative for novapeak.lab and reachable from the client.
+  [ 3.0/3 ] C2   all four A records correct
+  [   2/2 ] C3   reverse lookup of 192.168.19.10 returns ns1.
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [ 2.0/2 ] C7   pool+netmask correct
+  [   2/2 ] C8   gateway advertised correctly
+  [   3/3 ] C9   DHCP advertises the company DNS (192.168.19.10)
+  [   1/1 ] C10  company domain advertised
+  [   3/3 ] C11  client resolves www via the leased resolver
+  --------------------------------------------------
+  TOTAL: 25.0 / 25
+
+**Additional client test:**
+
+bash
+ip netns exec client dig @192.168.19.10 www.novapeak.lab A +short
+ip netns exec client dig @192.168.19.10 api.novapeak.lab A +short
+
+**Actual output:**
+
+text
+192.168.19.20
+192.168.19.40
+
+The client also had the DHCP address 192.168.19.104/24 on `cli0`. All checks in the build phase passed. This is not the same as the overall 100-mark course grade.
+
+## Evidence Files
+
+- checker_result.txt — final build-phase checker output.
+- session.log — recorded commands, initial errors, fixes, and final results.
+- fixed-configs/ — the final DNS and DHCP configuration files.
+
+**Before submission:** Replace each Found/proved by placeholder with the actual group member who performed that work. Add the six members' real names at the top. Do not attribute commands to members who did not perform them.
+
+**Verified By:** Kaung Khant Htoo
