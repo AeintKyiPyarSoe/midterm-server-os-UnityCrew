@@ -30,7 +30,7 @@ Our incident log records how we checked the live system and verified the faults.
 3. DHCP advertised 8.8.8.8 instead of our internal DNS server `192.168.19.10`.
 4. An iptables INPUT rule dropped UDP port 53 DNS packets.
 
-The initial checker scored **11/25**. After repairing the zone path and removing the firewall rule, it scored **18.25/25**, showing that the incorrect A record and DHCP DNS setting still needed fixing. The final score was **25/25**. 
+The initial checker scored **11/25**. After repairing the zone path and removing the firewall rule, it scored **18.25/25**, showing that the incorrect A record and DHCP DNS setting still needed fixing. The final score was **25/25**.
 
 ## Part 3c: Putting the AIs to the test
 
@@ -49,3 +49,15 @@ The initial checker scored **11/25**. After repairing the zone path and removing
 > Check `named.conf.local` for the `novapeak.lab` zone. The declared file must match the actual zone file name. Update `db.MISSING` to `db.novapeak.lab`, validate the configuration, and reload BIND.
 
 **Our evaluation:** Both sample suggestions address the actual cause. The original `named-checkconf -z` showed the missing-file error. After fixing the path, it reported `zone novapeak.lab/IN: loaded serial 2024010101`, and `named-checkzone` returned `OK`. This validated the proposed fix, but it does not verify either sample AI response was actually given.
+
+### 2. Khun Maung Aye: Wrong API address (Gemini)
+
+**Prompt:**
+
+> My api.novapeak.lab is giving 192.168.19.1 when I run `dig`, but the task says it should be `192.168.19.40`. Which file should I edit and what should I do after changing it?
+
+**Gemini response :**
+
+> Check the forward zone file `/etc/bind/db.novapeak.lab`. Change the api A record from 192.168.19.1 to `192.168.19.40`. Increase the zone serial number, validate with `named-checkzone`, restart BIND, and query the hostname again with `dig`.
+
+**Our evaluation:** This advice matches the issue. The actual dig @192.168.19.10 api.novapeak.lab A +short output before repair was `192.168.19.1`. After the change and service restart, the query returned `192.168.19.40`. The comparison response still needs confirmation from Khun's Gemini history.
