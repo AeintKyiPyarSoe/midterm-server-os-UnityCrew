@@ -1,0 +1,419 @@
+Script started on 2026-10-14 04:32:13+00:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="75" LINES="45"]
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7mmkdir -p /root/midterm-evidence[27mmkdir -p /root/midterm-evidence
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mpython3 /root/grading/check_lab.py --group lab01 --phase bui[27m[7ml[27m[7mld \[27m
+[7m  | tee /root/midterm-evidence/before.txt[27m[A[Apython3 /root/grading/check_lab.py --group lab01 --phase build \
+  | tee /root/midterm-evidence/before.txt
+[?2004l  [   1/2 ] C4   named-checkconf -z FAILED; named-checkzone clean
+  [   2/2 ] C5   dhcpd -t clean; service running
+  [   0/2 ] C1   client cannot reach named at 192.168.19.10 (timeout/no status). Check listen-on, allow-query, firewall, and that it serves on lan0.
+  [ 0.0/3 ] C2   ns1 expected 192.168.19.10 got nothing; www expected 192.168.19.20 got nothing; mail expected 192.168.19.30 got nothing; api expected 192.168.19.40 got nothing
+  [   0/2 ] C3   reverse lookup of 192.168.19.10 did not return ns1 (got nothing). Check the reverse zone and its PTR.
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [ 2.0/2 ] C7   pool+netmask correct
+  [   2/2 ] C8   gateway advertised correctly
+  [   0/3 ] C9   DHCP advertises 8.8.8.8, expected the company DNS 192.168.19.10 -- this is the integration the whole project is about
+  [   1/1 ] C10  company domain advertised
+  [   0/3 ] C11  using the leased resolver 8.8.8.8, www did not resolve to 192.168.19.20 (got nothing). If the leased resolver is a public one, that is the integration bug.
+  --------------------------------------------------
+  TOTAL: 11.0 / 25
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mcat /etc/bind/named.conf.local[27mcat /etc/bind/named.conf.local
+[?2004lzone "novapeak.lab" {
+	type master;
+	file "/etc/bind/db.MISSING";
+};
+
+zone "19.168.192.in-addr.arpa" {
+	type master;
+	file "/etc/bind/db.novapeak.lab.rev";
+};
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mls -l /etc/bind/db.MISSING[27m
+[7mls -l /etc/bind/db.novapeak.lab[27m
+[7mnamed-checkconf -z[27m[A[Als -l /etc/bind/db.MISSING
+ls -l /etc/bind/db.novapeak.lab
+named-checkconf -z
+[?2004lls: cannot access '/etc/bind/db.MISSING': No such file or directory
+-rw-r--r-- 1 bind bind 212 Oct 14 04:31 /etc/bind/db.novapeak.lab
+zone novapeak.lab/IN: loading from master file /etc/bind/db.MISSING failed: file not found
+zone novapeak.lab/IN: not loaded due to errors.
+_default/novapeak.lab/IN: file not found
+zone 19.168.192.in-addr.arpa/IN: loaded serial 2024010101
+zone localhost/IN: loaded serial 2
+zone 127.in-addr.arpa/IN: loaded serial 1
+zone 0.in-addr.arpa/IN: loaded serial 1
+zone 255.in-addr.arpa/IN: loaded serial 1
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mls -l /etc/bind/db.MISSING[27mls -l /etc/bind/db.MISSING
+[?2004lls: cannot access '/etc/bind/db.MISSING': No such file or directory
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7msed -i 's|/etc/bind/db.MISSING|/etc/bind/db.novapeak.lab|' \[27m 
+[7m  /etc/bind/named.conf.local[27m[A[Ased -i 's|/etc/bind/db.MISSING|/etc/bind/db.novapeak.lab|' \ 
+  /etc/bind/named.conf.local
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mcat /etc/bind/named.conf.local[27mcat /etc/bind/named.conf.local
+[?2004lzone "novapeak.lab" {
+	type master;
+	file "/etc/bind/db.novapeak.lab";
+};
+
+zone "19.168.192.in-addr.arpa" {
+	type master;
+	file "/etc/bind/db.novapeak.lab.rev";
+};
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mnamed-checkconf -z[27mnamed-checkconf -z
+[?2004lzone novapeak.lab/IN: loaded serial 2024010101
+zone 19.168.192.in-addr.arpa/IN: loaded serial 2024010101
+zone localhost/IN: loaded serial 2
+zone 127.in-addr.arpa/IN: loaded serial 1
+zone 0.in-addr.arpa/IN: loaded serial 1
+zone 255.in-addr.arpa/IN: loaded serial 1
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7mnamed-checkzone novapeak.lab /etc/bind/db.novapeak.lab[27m[01;32mroot@ubuntu[00m:[01;34m~[00m$ named-checkzone novapeak.lab /etc/bind/db.novapeak.lab
+[?2004lzone novapeak.lab/IN: loaded serial 2024010101
+OK
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7msystemctl restart named[27msystemctl restart named
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7msystemctl is-active named[27msystemctl is-active named
+[?2004lactive
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7mdig @192.168.19.10 ns1.novapeak.lab A +short[27m[01;32mroot@ubuntu[00m:[01;34m~[00m$ dig @192.168.19.10 ns1.novapeak.lab A +short
+[?2004l;; communications error to 192.168.19.10#53: timed out
+;; communications error to 192.168.19.10#53: timed out
+;; communications error to 192.168.19.10#53: timed out
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.7-Ubuntu <<>> @192.168.19.10 ns1.novapeak.lab A +short
+; (1 server found)
+;; global options: +cmd
+;; no servers could be reached
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[K[8P[01;32mroot@ubunt
+u[00m:[01;34m~[00m$ [K[A[K[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7msystemctl status named --no-pager[27msystemctl status named --no-pager
+[?2004l[0;1;32m●[0m named.service - BIND Domain Name Server
+     Loaded: loaded (]8;;file://ubuntu/usr/lib/systemd/system/named.service/usr/lib/systemd/system/named.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Wed 2026-10-14 04:33:52 UTC; 55s ago
+       Docs: ]8;;man:named(8)man:named(8)]8;;
+   Main PID: 2664 (named)
+     Status: "[0;1;36mrunning[0m"
+      Tasks: 5 (limit: 2237)
+     Memory: 22.0M (peak: 22.2M)
+        CPU: 30ms
+     CGroup: /system.slice/named.service
+             └─[0;38;5;245m2664 /usr/sbin/named -f -u bind[0m
+
+Oct 14 04:33:52 ubuntu named[2664]: SERVFAIL unexpected RCODE resolvin…0#53
+Oct 14 04:33:52 ubuntu named[2664]: SERVFAIL unexpected RCODE resolvin…4#53
+Oct 14 04:33:52 ubuntu named[2664]: SERVFAIL unexpected RCODE resolvin…1#53
+Oct 14 04:33:52 ubuntu named[2664]: SERVFAIL unexpected RCODE resolvin…2#53
+Oct 14 04:33:52 ubuntu named[2664]: SERVFAIL unexpected RCODE resolvin…3#53
+Oct 14 04:33:52 ubuntu named[2664]: SERVFAIL unexpected RCODE resolvin…4#53
+Oct 14 04:33:52 ubuntu named[2664]: SERVFAIL unexpected RCODE resolvin…2#53
+Oct 14 04:33:52 ubuntu named[2664]: SERVFAIL unexpected RCODE resolvin…3#53
+Oct 14 04:33:52 ubuntu named[2664]: network unreachable resolving './N…0#53
+Oct 14 04:33:52 ubuntu named[2664]: [0;1;39mresolver priming query complete: f…lure[0m
+Hint: Some lines were ellipsized, use -l to show in full.
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7miptables -L INPUT -n -v --line-numbers[27miptables -L INPUT -n -v --line-numbers
+[?2004lChain INPUT (policy ACCEPT 646 packets, 50575 bytes)
+num   pkts bytes target     prot opt in     out     source               destination         
+1        3   255 DROP       17   --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:53
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7miptables -D INPUT -p udp --dport 53 -j DROP[27m[01;32mroot@ubuntu[00m:[01;34m~[00m$ iptables -D INPUT -p udp --dport 53 -j DROP
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7miptables -S INPUT[27miptables -S INPUT
+[?2004l-P INPUT ACCEPT
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7mdig @192.168.19.10 ns1.novapeak.lab A +short +time=2 +tries=[27m[7m1[27m[7m1[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ dig @192.168.19.10 ns1.novapeak.lab A +short +time=2 +tries=1
+[?2004l192.168.19.10
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mdig @192.168.19.10 www.novapeak.lab A +short[27m[01;32mroot@ubuntu[00m:[01;34m~[00m$ dig @192.168.19.10 www.novapeak.lab A +short
+[?2004l192.168.19.20
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mip netns exec client dig @192.168.19.10 www.novapeak.lab A +[27m[7ms[27m[7mshort[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip netns exec client dig @192.168.19.10 www.novapeak.lab A +short
+[?2004l192.168.19.20
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mpython3 /root/grading/check_lab.py --group lab01 --phase bui[27m[7ml[27m[7mld[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ python3 /root/grading/check_lab.py --group lab01 --phase build
+[?2004l  [   2/2 ] C4   named-checkconf -z clean; named-checkzone clean
+  [   2/2 ] C5   dhcpd -t clean; service running
+  [   2/2 ] C1   named is authoritative for novapeak.lab and reachable from the client.
+  [2.25/3 ] C2   api expected 192.168.19.40 got ['192.168.19.1']
+  [   2/2 ] C3   reverse lookup of 192.168.19.10 returns ns1.
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [ 2.0/2 ] C7   pool+netmask correct
+  [   2/2 ] C8   gateway advertised correctly
+  [   0/3 ] C9   DHCP advertises 8.8.8.8, expected the company DNS 192.168.19.10 -- this is the integration the whole project is about
+  [   1/1 ] C10  company domain advertised
+  [   0/3 ] C11  using the leased resolver 8.8.8.8, www did not resolve to 192.168.19.20 (got nothing). If the leased resolver is a public one, that is the integration bug.
+  --------------------------------------------------
+  TOTAL: 18.25 / 25
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mip addr show lan0[27mip addr show lan0
+[?2004l5: lan0@if4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 22:c5:ba:ee:85:23 brd ff:ff:ff:ff:ff:ff link-netns client
+    inet 192.168.19.10/24 scope global lan0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::c8d3:63ff:fee6:3165/64 scope link 
+       valid_lft forever preferred_lft forever
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip addr show lan0python3 /root/grading/check_lab.py --group lab01 --phase builld[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip netns exec client dig @192.168.19.10 www.novapeak.lab A +short[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ [16Pdig @192.168.19.10 www.novapeak.lab A +short
+[K[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ dig @192.168.19.10 www.novapeak.lab A +shortns1.novapeak.lab A +short +time=2 +tries=11[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ dig @192.168.19.10 [16Pwww.novapeak.lab A +short
+[K[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ dig @192.168.19.10 www.novapeak.lab A +short[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip netns exec client dig @192.168.19.10 www.novapeak.lab A +sshort[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ python3 /root/grading/check_lab.py --group lab01 --phase build[K[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip addr show lan0[K
+[K[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip addr show lan0[K[7mip netns exec client dig @192.168.19.10 api.novapeak.lab A +[27m[7ms[27m[7mshort[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip netns exec client dig @192.168.19.10 api.novapeak.lab A +short
+[?2004l192.168.19.1
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mpython3 /root/grading/check_lab.py --group lab01 --phase bui[27m[7ml[27m[7mld[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ python3 /root/grading/check_lab.py --group lab01 --phase build
+[?2004l  [   2/2 ] C4   named-checkconf -z clean; named-checkzone clean
+  [   2/2 ] C5   dhcpd -t clean; service running
+  [   2/2 ] C1   named is authoritative for novapeak.lab and reachable from the client.
+  [2.25/3 ] C2   api expected 192.168.19.40 got ['192.168.19.1']
+  [   2/2 ] C3   reverse lookup of 192.168.19.10 returns ns1.
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [ 2.0/2 ] C7   pool+netmask correct
+  [   2/2 ] C8   gateway advertised correctly
+  [   0/3 ] C9   DHCP advertises 8.8.8.8, expected the company DNS 192.168.19.10 -- this is the integration the whole project is about
+  [   1/1 ] C10  company domain advertised
+  [   0/3 ] C11  using the leased resolver 8.8.8.8, www did not resolve to 192.168.19.20 (got nothing). If the leased resolver is a public one, that is the integration bug.
+  --------------------------------------------------
+  TOTAL: 18.25 / 25
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mcat /etc/bind/db.novapeak.lab[27mcat /etc/bind/db.novapeak.lab
+[?2004l$TTL 3600
+@ IN SOA ns1.novapeak.lab. admin.novapeak.lab. ( 2024010101 3600 1800 604800 3600 )
+@ IN NS ns1.novapeak.lab.
+ns1 IN A 192.168.19.10
+www IN A 192.168.19.20
+mail IN A 192.168.19.30
+api IN A 192.168.19.1
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mdig @192.168.19.10 api.novapeak.lab A +short[27m[01;32mroot@ubuntu[00m:[01;34m~[00m$ dig @192.168.19.10 api.novapeak.lab A +short
+[?2004l192.168.19.1
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7msed -i 's/api IN A 192.168.19.1$/api IN A 192.168.19.40/' \[27m
+[7m  /etc/bind/db.novapeak.lab[27m[Ased -i 's/api IN A 192.168.19.1$/api IN A 192.168.19.40/' \
+  /etc/bind/db.novapeak.lab
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7msed -i 's/2024010101/2026101401/' \[27m
+[7m  /etc/bind/db.novapeak.lab[27m[Ased -i 's/2024010101/2026101401/' \
+  /etc/bind/db.novapeak.lab
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mnamed-checkzone novapeak.lab /etc/bind/db.novapeak.lab[27m[01;32mroot@ubuntu[00m:[01;34m~[00m$ named-checkzone novapeak.lab /etc/bind/db.novapeak.lab
+[?2004lzone novapeak.lab/IN: loaded serial 2026101401
+OK
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7msystemctl restart named[27msystemctl restart named
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7mdig @192.168.19.10 ns1.novapeak.lab A +short[27m
+[7mdig @192.168.19.10 www.novapeak.lab A +short[27m
+[7mdig @192.168.19.10 mail.novapeak.lab A +short[27m
+[7mdig @192.168.19.10 api.novapeak.lab A +short[27m[A[A[Adig @192.168.19.10 ns1.novapeak.lab A +short
+dig @192.168.19.10 www.novapeak.lab A +short
+dig @192.168.19.10 mail.novapeak.lab A +short
+dig @192.168.19.10 api.novapeak.lab A +short
+[?2004l192.168.19.10
+192.168.19.20
+192.168.19.30
+192.168.19.40
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mnamed-checkzone 19.168.192.in-addr.arpa \[27m
+[7m  /etc/bind/db.novapeak.lab.rev[27m
+
+[7mdig @192.168.19.10 -x 192.168.19.10 +short[27m
+[7mdig @192.168.19.10 -x 192.168.19.20 +short[27m
+[7mdig @192.168.19.10 -x 192.168.19.30 +short[27m
+[7mdig @192.168.19.10 -x 192.168.19.40 +short[27m[A[A[A[A[A[Anamed-checkzone 19.168.192.in-addr.arpa \
+  /etc/bind/db.novapeak.lab.rev
+
+dig @192.168.19.10 -x 192.168.19.10 +short
+dig @192.168.19.10 -x 192.168.19.20 +short
+dig @192.168.19.10 -x 192.168.19.30 +short
+dig @192.168.19.10 -x 192.168.19.40 +short
+[?2004lzone 19.168.192.in-addr.arpa/IN: loaded serial 2024010101
+OK
+ns1.novapeak.lab.
+www.novapeak.lab.
+mail.novapeak.lab.
+api.novapeak.lab.
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mcat /etc/dhcp/dhcpd.conf[27mcat /etc/dhcp/dhcpd.conf
+[?2004loption domain-name "novapeak.lab";
+default-lease-time 3600;
+max-lease-time 7200;
+
+subnet 192.168.19.0 netmask 255.255.255.0 {
+	range 192.168.19.104 192.168.19.144;
+	option routers 192.168.19.1;
+	option domain-name-servers 8.8.8.8;
+}
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7mgrep -n "domain-name-servers" /etc/dhcp/dhcpd.conf[27m[01;32mroot@ubuntu[00m:[01;34m~[00m$ grep -n "domain-name-servers" /etc/dhcp/dhcpd.conf
+[?2004l[32m[K8[m[K[36m[K:[m[K	option [01;31m[Kdomain-name-servers[m[K 8.8.8.8;
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7msed -i 's/option domain-name-servers 8.8.8.8;/option domain-[27m[7mn[27m[7mname-servers 192.168.19.10;/' \[27m
+[7m  /etc/dhcp/dhcpd.conf[27m[A[Ased -i 's/option domain-name-servers 8.8.8.8;/option domain-name-servers 192.168.19.10;/' \
+  /etc/dhcp/dhcpd.conf
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mcat /etc/default/isc-dhcp-server[27mcat /etc/default/isc-dhcp-server
+[?2004lINTERFACESv4="lan0"
+INTERFACESv6=""
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mdhcpd -t -cf /etc/dhcp/dhcpd.conf[27m
+[7msystemctl restart isc-dhcp-server[27m
+[7msystemctl is-active isc-dhcp-server[27m[A[Adhcpd -t -cf /etc/dhcp/dhcpd.conf
+systemctl restart isc-dhcp-server
+systemctl is-active isc-dhcp-server
+[?2004lInternet Systems Consortium DHCP Server 4.4.3-P1
+Copyright 2004-2022 Internet Systems Consortium.
+All rights reserved.
+For info, please visit https://www.isc.org/software/dhcp/
+Config file: /etc/dhcp/dhcpd.conf
+Database file: /var/lib/dhcp/dhcpd.leases
+PID file: /var/run/dhcpd.pid
+active
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mdhcpd -t -cf /etc/dhcp/dhcpd.conf[27mdhcpd -t -cf /etc/dhcp/dhcpd.conf
+[?2004lInternet Systems Consortium DHCP Server 4.4.3-P1
+Copyright 2004-2022 Internet Systems Consortium.
+All rights reserved.
+For info, please visit https://www.isc.org/software/dhcp/
+Config file: /etc/dhcp/dhcpd.conf
+Database file: /var/lib/dhcp/dhcpd.leases
+PID file: /var/run/dhcpd.pid
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7msystemctl restart isc-dhcp-server[27msystemctl restart isc-dhcp-server
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7msystemctl is-active isc-dhcp-server[27msystemctl is-active isc-dhcp-server
+[?2004lactive
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mpython3 /root/grading/check_lab.py --group lab01 --phase bui[27m[7ml[27m[7mld[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ python3 /root/grading/check_lab.py --group lab01 --phase build
+[?2004l  [   2/2 ] C4   named-checkconf -z clean; named-checkzone clean
+  [   2/2 ] C5   dhcpd -t clean; service running
+  [   2/2 ] C1   named is authoritative for novapeak.lab and reachable from the client.
+  [ 3.0/3 ] C2   all four A records correct
+  [   2/2 ] C3   reverse lookup of 192.168.19.10 returns ns1.
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [ 2.0/2 ] C7   pool+netmask correct
+  [   2/2 ] C8   gateway advertised correctly
+  [   3/3 ] C9   DHCP advertises the company DNS (192.168.19.10)
+  [   1/1 ] C10  company domain advertised
+  [   3/3 ] C11  client resolves www via the leased resolver
+  --------------------------------------------------
+  TOTAL: 25.0 / 25
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mip netns exec client ip -4 addr show cli0[27mip netns exec client ip -4 addr show cli0
+[?2004l4: cli0@if5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000 link-netnsid 0
+    inet 192.168.19.104/24 brd 192.168.19.255 scope global dynamic noprefixroute cli0
+       valid_lft 3590sec preferred_lft 3140sec
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7miptables -L INPUT -n -v --line-numbers[27m
+[7miptables -S INPUT[27m[Aiptables -L INPUT -n -v --line-numbers
+iptables -S INPUT
+[?2004lChain INPUT (policy ACCEPT 1558 packets, 120K bytes)
+num   pkts bytes target     prot opt in     out     source               destination         
+-P INPUT ACCEPT
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mip netns exec client dig @192.168.19.10 www.novapeak.lab A +[27m[7mt[27m[7mtime=3 +tries=1[27m[Aip netns exec client dig @192.168.19.10 www.novapeak.lab A +time=3 +tries=1
+[?2004l
+; <<>> DiG 9.18.39-0ubuntu0.24.04.7-Ubuntu <<>> @192.168.19.10 www.novapeak.lab A +time=3 +tries=1
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 18473
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: f841923c1ac3f2bc010000006acf07f44672b77bd93d7e89 (good)
+;; QUESTION SECTION:
+;www.novapeak.lab.		IN	A
+
+;; ANSWER SECTION:
+www.novapeak.lab.	3600	IN	A	192.168.19.20
+
+;; Query time: 0 msec
+;; SERVER: 192.168.19.10#53(192.168.19.10) (UDP)
+;; WHEN: Wed Oct 14 04:41:24 UTC 2026
+;; MSG SIZE  rcvd: 89
+
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7miptables -L INPUT -n -v --line-numbers[27miptables -L INPUT -n -v --line-numbers
+[?2004lChain INPUT (policy ACCEPT 1656 packets, 127K bytes)
+num   pkts bytes target     prot opt in     out     source               destination         
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7miptables -S INPUT[27miptables -S INPUT
+[?2004l-P INPUT ACCEPT
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7miptables -D INPUT -p udp --dport 53 -j DROP[27m[01;32mroot@ubuntu[00m:[01;34m~[00m$ iptables -D INPUT -p udp --dport 53 -j DROP
+[?2004liptables: Bad rule (does a matching rule exist in that chain?).
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7miptables -S INPUT[27miptables -S INPUT
+[?2004l-P INPUT ACCEPT
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7mip netns exec client dig @192.168.19.10 www.novapeak.lab A +[27m[7ms[27m[7mshort[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip netns exec client dig @192.168.19.10 www.novapeak.lab A +short
+[?2004l192.168.19.20
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mip netns exec client dig @192.168.19.10 api.novapeak.lab A +[27m[7ms[27m[7mshort[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ ip netns exec client dig @192.168.19.10 api.novapeak.lab A +short
+[?2004l192.168.19.40
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mnamed-checkconf -z[27m
+[7mnamed-checkzone novapeak.lab /etc/bind/db.novapeak.lab[27m
+[7mnamed-checkzone 19.168.192.in-addr.arpa /etc/bind/db.novapeak.lab.rev[27m
+[7mdhcpd -t -cf /etc/dhcp/dhcpd.conf[27m
+[7msystemctl is-active named[27m
+[7msystemctl is-active isc-dhcp-server[27m[A[A[A[A[Anamed-checkconf -z
+named-checkzone novapeak.lab /etc/bind/db.novapeak.lab
+named-checkzone 19.168.192.in-addr.arpa /etc/bind/db.novapeak.lab.rev
+dhcpd -t -cf /etc/dhcp/dhcpd.conf
+systemctl is-active named
+systemctl is-active isc-dhcp-server
+[?2004lzone novapeak.lab/IN: loaded serial 2026101401
+zone 19.168.192.in-addr.arpa/IN: loaded serial 2024010101
+zone localhost/IN: loaded serial 2
+zone 127.in-addr.arpa/IN: loaded serial 1
+zone 0.in-addr.arpa/IN: loaded serial 1
+zone 255.in-addr.arpa/IN: loaded serial 1
+zone novapeak.lab/IN: loaded serial 2026101401
+OK
+zone 19.168.192.in-addr.arpa/IN: loaded serial 2024010101
+OK
+Internet Systems Consortium DHCP Server 4.4.3-P1
+Copyright 2004-2022 Internet Systems Consortium.
+All rights reserved.
+For info, please visit https://www.isc.org/software/dhcp/
+Config file: /etc/dhcp/dhcpd.conf
+Database file: /var/lib/dhcp/dhcpd.leases
+PID file: /var/run/dhcpd.pid
+active
+active
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mpython3 /root/grading/check_lab.py --group lab01 --phase bui[27m[7ml[27m[7mld \[27m
+[7m  | tee /root/midterm-evidence/after.txt[27m[A[Apython3 /root/grading/check_lab.py --group lab01 --phase build \
+  | tee /root/midterm-evidence/after.txt
+[?2004l  [   2/2 ] C4   named-checkconf -z clean; named-checkzone clean
+  [   2/2 ] C5   dhcpd -t clean; service running
+  [   2/2 ] C1   named is authoritative for novapeak.lab and reachable from the client.
+  [ 3.0/3 ] C2   all four A records correct
+  [   2/2 ] C3   reverse lookup of 192.168.19.10 returns ns1.
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [ 2.0/2 ] C7   pool+netmask correct
+  [   2/2 ] C8   gateway advertised correctly
+  [   3/3 ] C9   DHCP advertises the company DNS (192.168.19.10)
+  [   1/1 ] C10  company domain advertised
+  [   3/3 ] C11  client resolves www via the leased resolver
+  --------------------------------------------------
+  TOTAL: 25.0 / 25
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mcd /root[27m
+
+[7mcurl -fsSL \[27m
+[7mhttps://raw.githubusercontent.com/teaching-git/midterm-server-os/main/serve[27m[7mr[27m[7mros-midterm-lab01/handout/INCIDENT_LOG_TEMPLATE.md \[27m
+[7m-o INCIDENT_LOG.md[27m[A[A[A[A[Acd /root
+
+curl -fsSL \
+https://raw.githubusercontent.com/teaching-git/midterm-server-os/main/serveros-midterm-lab01/handout/INCIDENT_LOG_TEMPLATE.md \
+-o INCIDENT_LOG.md
+[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mnano INCIDENT_LOG.md[27mnano INCIDENT_LOG.md
+[?2004l[?2004h[?1049h[22;0;0t[1;45r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[43;31H(B[0;7m[ Reading... ](B[m[43;30H(B[0;7m[ Read 35 lines ](B[m[H(B[0;7m  GNU nano 7.2 [17bINCIDENT_LOG.md [26b [1;74H(B[m[44d(B[0;7m^G(B[m Help[44;16H(B[0;7m^O(B[m Write Out   (B[0;7m^W(B[m Where Is    (B[0;7m^K(B[m Cut[44;61H(B[0;7m^T(B[m Execute[45d(B[0;7m^X(B[m Exit[45;16H(B[0;7m^R(B[m Read File   (B[0;7m^\(B[m Replace     (B[0;7m^U(B[m Paste[61G(B[0;7m^J(B[m Justify[2d(B[0;1m[33m# Incident Log[4d[39m(B[mGroup: [36m<name>[39m(B[m   Members: [36m<names>[5d[39m(B[mCompany / domain: [36m<assigned>[7d[39m(B[mFill in ONE entry per fault you found. Paste real command output -- an ent(B[0;7m>[8;1H(B[mwithout evidence earns little. Copy this block for each fault.[10d(B[0;1m[33m---[12d## Fault 1[14d[35m- [32m**Symptom (what we observed):**[15;3H[36m```[16d  (B[0m[36m<paste the command and its output that showed something was wrong>[17d(B[0;1m[36m  ```[18d[35m- [32m**Hypothesis (what we suspected and why):**[19;3H(B[0m[36m<your reasoning>[20d(B[0;1m[35m- [32m**Proof (the command that confirmed the cause):**[21;3H[36m```[22d  (B[0m[36m<paste the command and output that proved it>[23d(B[0;1m[36m  ```[24d[35m- [32m**Fix (what we changed):**[25;3H(B[0m[36m<the change>[26d(B[0;1m[35m- [32m**Confirmation (output showing it now works):**[27;3H[36m```[28d  (B[0m[36m<paste the corrected output>[29d(B[0;1m[36m  ```[30d[35m- [32m**Found/proved by:**[39m(B[m [36m<member name>[32d(B[0;1m[33m---[34d## Fault 2[36d[39m(B[m(copy the block above for each additional fault)[2d[?12l[?25h[?25l[43d[J[45d[?12l[?25h[45;1H[?1049l[23;0;0t[?1l>[?2004l[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [7mpython3 /root/grading/check_lab.py --group lab01 --phase bui[27m[7ml[27m[7mld[27m[A[01;32mroot@ubuntu[00m:[01;34m~[00m$ python3 /root/grading/check_lab.py --group lab01 --phase build
+[?2004l  [   2/2 ] C4   named-checkconf -z clean; named-checkzone clean
+  [   2/2 ] C5   dhcpd -t clean; service running
+  [   2/2 ] C1   named is authoritative for novapeak.lab and reachable from the client.
+  [ 3.0/3 ] C2   all four A records correct
+  [   2/2 ] C3   reverse lookup of 192.168.19.10 returns ns1.
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [ 2.0/2 ] C7   pool+netmask correct
+  [   2/2 ] C8   gateway advertised correctly
+  [   3/3 ] C9   DHCP advertises the company DNS (192.168.19.10)
+  [   1/1 ] C10  company domain advertised
+  [   3/3 ] C11  client resolves www via the leased resolver
+  --------------------------------------------------
+  TOTAL: 25.0 / 25
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mpython3 /root/grading/check_lab.py --group lab01 --phase bui[27m[7ml[27m[7mld | tee checker_result.txt[27m[Apython3 /root/grading/check_lab.py --group lab01 --phase build | tee checker_result.txt
+[?2004l  [   2/2 ] C4   named-checkconf -z clean; named-checkzone clean
+  [   2/2 ] C5   dhcpd -t clean; service running
+  [   2/2 ] C1   named is authoritative for novapeak.lab and reachable from the client.
+  [ 3.0/3 ] C2   all four A records correct
+  [   2/2 ] C3   reverse lookup of 192.168.19.10 returns ns1.
+  [   3/3 ] C6   client obtained a lease: 192.168.19.104
+  [ 2.0/2 ] C7   pool+netmask correct
+  [   2/2 ] C8   gateway advertised correctly
+  [   3/3 ] C9   DHCP advertises the company DNS (192.168.19.10)
+  [   1/1 ] C10  company domain advertised
+  [   3/3 ] C11  client resolves www via the leased resolver
+  --------------------------------------------------
+  TOTAL: 25.0 / 25
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mzip -r midterm-server-os.zip fixed-configs/ session.log chec[27m[7mk[27m[7mker_result.txt[27m[A zip -r midterm-server-os.zip fixed-configs/ session.log checker_result.txt
+[?2004lCommand 'zip' not found, but can be installed with:
+apt install zip
+[?2004h[01;32mroot@ubuntu[00m:[01;34m~[00m$ [K[7mapt-get install -y zip[27mapt-get install -y zip
+[?2004lReading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+The following package was automatically installed and is no longer required:
+  squashfs-tools
+Use 'apt autoremove' to remove it.
+The following NEW packages will be installed:
+  zip
+0 upgraded, 1 newly installed, 0 to remove and 21 not upgraded.
+Need to get 176 kB of archives.
+After this operation, 549 kB of additional disk space will be used.
+0% [Working]0% [Waiting for headers]                        Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 zip amd64 3.0-13ubuntu0.2 [176 kB]
+6% [1 zip 12.5 kB/176 kB 7%]17% [1 zip 38.2 kB/176 kB 22%]                              66% [1 zip 145 kB/176 kB 82%]                             100% [Working]              Fetched 176 kB in 2s (109 kB/s)
+Selecting previously unselected package zip.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 114243 files and directories currently installed.)
+Preparing to unpack .../zip_3.0-13ubuntu0.2_amd64.deb ...
+Unpacking zip (3.0-13ubuntu0.2) ...
+Setting up zip (3.0-13ubuntu0.2) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes... [                                                   ]Scanning processes... [                                                   ]Scanning processes... [                                                   ]Scanning processes... [=                                                  ]Scanning processes... [=                                                  ]Scanning processes... [=                                                  ]Scanning processes... [==                                                 ]Scanning processes... [==                                                 ]Scanning processes... [==                                                 ]Scanning processes... [===                                                ]Scanning processes... [===                                                ]Scanning processes... [===                                                ]Scanning processes... [====                                               ]Scanning processes... [====                                               ]Scanning processes... [====                                               ]Scanning processes... [=====                                              ]Scanning processes... [=====                                              ]Scanning processes... [======                                             ]Scanning processes... [======                                             ]Scanning processes... [======                                             ]Scanning processes... [=======                                            ]Scanning processes... [=======                                            ]Scanning processes... [=======                                            ]Scanning processes... [========                                           ]Scanning processes... [========                                           ]Scanning processes... [========                                           ]Scanning processes... [=========                                          ]Scanning processes... [=========                                          ]Scanning processes... [=========                                          ]Scanning processes... [==========                                         ]Scanning processes... [==========                                         ]Scanning processes... [==========                                         ]Scanning processes... [===========                                        ]Scanning processes... [===========                                        ]Scanning processes... [============                                       ]Scanning processes... [============                                       ]Scanning processes... [============                                       ]Scanning processes... [=============                                      ]Scanning processes... [=============                                      ]Scanning processes... [=============                                      ]Scanning processes... [==============                                     ]Scanning processes... [==============                                     ]Scanning processes... [==============                                     ]Scanning processes... [===============                                    ]Scanning processes... [===============                                    ]Scanning processes... [===============                                    ]Scanning processes... [================                                   ]Scanning processes... [================                                   ]Scanning processes... [=================                                  ]Scanning processes... [=================                                  ]Scanning processes... [=================                                  ]Scanning processes... [==================                                 ]Scanning processes... [==================                                 ]Scanning processes... [==================                                 ]Scanning processes... [===================                                ]Scanning processes... [===================                                ]Scanning processes... [===================                                ]Scanning processes... [====================                               ]Scanning processes... [====================                               ]Scanning processes... [====================                               ]Scanning processes... [=====================                              ]Scanning processes... [=====================                              ]Scanning processes... [=====================                              ]Scanning processes... [======================                             ]Scanning processes... [======================                             ]Scanning processes... [=======================                            ]Scanning processes... [=======================                            ]Scanning processes... [=======================                            ]Scanning processes... [========================                           ]Scanning processes... [========================                           ]Scanning processes... [========================                           ]Scanning processes... [=========================                          ]Scanning processes... [=========================                          ]Scanning processes... [=========================                          ]Scanning processes... [==========================                         ]Scanning processes... [==========================                         ]Scanning processes... [==========================                         ]Scanning processes... [===========================                        ]Scanning processes... [===========================                        ]Scanning processes... [===========================                        ]Scanning processes... [============================                       ]Scanning processes... [============================                       ]Scanning processes... [=============================                      ]Scanning processes... [=============================                      ]Scanning processes... [=============================                      ]Scanning processes... [==============================                     ]Scanning processes... [==============================                     ]Scanning processes... [==============================                     ]Scanning processes... [===============================                    ]Scanning processes... [===============================                    ]Scanning processes... [===============================                    ]Scanning processes... [================================                   ]Scanning processes... [================================                   ]Scanning processes... [================================                   ]Scanning processes... [=================================                  ]Scanning processes... [=================================                  ]Scanning processes... [==================================                 ]Scanning processes... [==================================                 ]Scanning processes... [==================================                 ]Scanning processes... [===================================                ]Scanning processes... [===================================                ]Scanning processes... [===================================                ]Scanning processes... [====================================               ]Scanning processes... [====================================               ]Scanning processes... [====================================               ]Scanning processes... [=====================================              ]Scanning processes... [=====================================              ]Scanning processes... [=====================================              ]Scanning processes... [======================================             ]Scanning processes... [======================================             ]Scanning processes... [======================================             ]Scanning processes... [=======================================            ]Scanning processes... [=======================================            ]Scanning processes... [========================================           ]Scanning processes... [========================================           ]Scanning processes... [========================================           ]Scanning processes... [=========================================          ]Scanning processes... [=========================================          ]Scanning processes... [=========================================          ]Scanning processes... [==========================================         ]Scanning processes... [==========================================         ]Scanning processes... [==========================================         ]Scanning processes... [===========================
