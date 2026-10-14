@@ -14,6 +14,7 @@
   
 - **Company:** NovaPeak
 - **Domain:** `novapeak.lab`
+- **Group ID used with the checker:** `lab01`
 
 ## Project Overview
 
