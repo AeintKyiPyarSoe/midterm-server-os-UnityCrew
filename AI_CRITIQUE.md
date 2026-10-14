@@ -21,3 +21,9 @@
 | Thida Khaing (@Thida-Khaing-may) | Firewall and troubleshooting | ChatGPT + Gemini | “BIND is running, but dig @192.168.19.10 times out. I found a DROP rule for UDP port 53. How do I prove it's the problem and remove only that rule?” |
 | Kaung Khant Htoo (@kxkhantx) | Final tests, documentation, submission | ChatGPT + Gemini | “Our checker is now 25/25. What does that prove about DNS and DHCP, and what should we still include in our GitHub submission?” |
 
+## Part 3b: Confirm you diagnosed first
+
+Our incident log records how we checked the live system and verified the faults. The confirmed faults were:
+
+1. The forward zone in `/etc/bind/named.conf.local` pointed to `/etc/bind/db.MISSING` instead of `/etc/bind/db.novapeak.lab`.
+
