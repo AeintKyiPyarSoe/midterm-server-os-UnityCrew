@@ -225,3 +225,77 @@ text
 - **Found/proved by:** Htet Soe Lin
 
 ---
+## Fault 4 — Firewall Blocked DNS Requests
+
+- **Symptom (what we observed):** BIND was active, but DNS queries to the DNS server's network address timed out.
+
+  **Actual test and output:**
+
+  
+bash
+  dig @192.168.19.10 ns1.novapeak.lab A +short
+  
+
+
+  
+text
+  ;; communications error to 192.168.19.10#53: timed out
+  ;; communications error to 192.168.19.10#53: timed out
+  ;; communications error to 192.168.19.10#53: timed out
+  ;; no servers could be reached
+  
+
+
+- **Hypothesis (what we suspected and why):** An incoming firewall rule was blocking UDP DNS requests on port 53.
+
+- **Proof (the command that confirmed the cause):**
+
+  
+bash
+  iptables -L INPUT -n -v --line-numbers
+  
+
+
+  **Actual output:**
+
+  
+text
+  Chain INPUT (policy ACCEPT 646 packets, 50575 bytes)
+  num   pkts bytes target     prot opt in     out     source               destination
+  1        3   255 DROP       17   --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:53
+  
+
+
+- **Fix (what we changed):** We removed only the UDP port 53 DROP rule.
+
+  
+bash
+  iptables -D INPUT -p udp --dport 53 -j DROP
+  
+
+
+- **Confirmation (output showing it now works):**
+
+  
+bash
+  iptables -S INPUT
+  dig @192.168.19.10 ns1.novapeak.lab A +short +time=2 +tries=1
+  ip netns exec client dig @192.168.19.10 www.novapeak.lab A +short
+  
+
+
+  **Actual output (in order):**
+
+  
+text
+  -P INPUT ACCEPT
+  192.168.19.10
+  192.168.19.20
+  
+
+
+  **Note:** Later in the session we tried to delete the same rule again and got `iptables: Bad rule (does a matching rule exist in that chain?)`. That was because the DROP rule had already been removed. The firewall listing confirmed it was gone.
+
+- **Found/proved by:** Thida Khaing
+
+---
