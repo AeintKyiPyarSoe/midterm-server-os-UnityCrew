@@ -36,13 +36,13 @@ The objective was to restore correct DNS resolution and DHCP configuration so th
 
 ## 2. Team Members and Contributions
 
-| Member                          | GitHub username  | Documentation responsibility                         |
-| ------------------------------- | ---------------- | ---------------------------------------------------- |
-| Aeint Kyi Pyar Soe - 6705140003 | @AeintKyiPyarSoe | Setup overview, test results & DNS zone file problem |
-| Khun Maung Aye - 6705140019     | @KhunMaungAye    | API A record problem and DNS settings                |
-| Htet Soe Lin - 6705140023 | @Tyzon22 | DHCP DNS problem and DHCP settings |
-| Thida Khaing - 6705140024 | @Thida-Khaing-may | Firewall problem and troubleshooting |
-| Kaung Khant Htoo - 6705140027 | @kxkhantx | Final testing, AI critique and submission review |
+| Member                          | GitHub username   | Documentation responsibility                         |
+| ------------------------------- | ----------------- | ---------------------------------------------------- |
+| Aeint Kyi Pyar Soe - 6705140003 | @AeintKyiPyarSoe  | Setup overview, test results & DNS zone file problem |
+| Khun Maung Aye - 6705140019     | @KhunMaungAye     | API A record problem and DNS settings                |
+| Htet Soe Lin - 6705140023       | @Tyzon22          | DHCP DNS problem and DHCP settings                   |
+| Thida Khaing - 6705140024       | @Thida-Khaing-may | Firewall problem and troubleshooting                 |
+| Kaung Khant Htoo - 6705140027   | @kxkhantx         | Final testing, AI critique and submission review     |
 
 ## 3. Repository Structure
 
@@ -73,3 +73,5 @@ During troubleshooting, the team identified four configuration or service issues
 3. DHCP advertised the public DNS resolver 8.8.8.8 instead of the internal DNS server.
 
 4. A firewall rule blocked incoming UDP traffic on port 53, preventing DNS queries from reaching the server.
+
+The team corrected the zone-file reference, updated the api record to 192.168.19.40, configured DHCP to advertise 192.168.19.10, and removed the blocking firewall rule.
