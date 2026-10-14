@@ -66,6 +66,8 @@ midterm-server-os-UnityCrew/
 
 During troubleshooting, the team identified four configuration or service issues:
 
-The forward DNS zone referenced a missing file, /etc/bind/db.MISSING.
+1. The forward DNS zone referenced a missing file, /etc/bind/db.MISSING.
 
-The api DNS A record pointed to the wrong IP address.
+2. The api DNS A record pointed to the wrong IP address.
+
+3. DHCP advertised the public DNS resolver 8.8.8.8 instead of the internal DNS server.
