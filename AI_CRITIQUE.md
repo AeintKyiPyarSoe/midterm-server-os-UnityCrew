@@ -1,32 +1,18 @@
 # AI Usage and Critique
 
-Group: <name>   Members: <names>
+**Group:** UnityCrew  
+**Members:** Aeint Kyi Pyar Soe (6705140003), Khun Maung Aye (6705140019), Htet Soe Lin (6705140023), Thida Khaing (6705140024), Kaung Khant Htoo (6705140027), Lapatrada Tusitanond - Mingie (6705140060)
+**Company / domain:** novapeak.lab  
 
 ## Part 3a: Declaration (required)
+
 | AI tool | What we used it for |
 | --- | --- |
-| | |
-| | |
+| ChatGPT  | Helped us understand the assignment, explained the DNS timeout, suggested commands for checking BIND and firewall rules, and helped organize our incident log and AI critique. |
+| Gemini  | Planned second opinion on the zone file, API A record, firewall, and final test results. Replace this line with the actual uses and dates once team members have used it. |
 
-(If you used no AI, write "None" and say how you worked instead.)
+**Team responsibilities and example prompts for the AI comparison:**
 
-## Part 3b: Confirm you diagnosed first
-We completed our own diagnosis (INCIDENT_LOG.md) before the comparison below.
-Briefly, the faults WE found on our own: <list>
-
-## Part 3c: Putting the AIs to the test
-We gave the following to at least two AI tools: <describe what you gave them>.
-
-| Fault (in our words) | We found it? | AI #1 (<name>) | AI #2 (<name>) | Was each AI actually right? |
-| --- | --- | --- | --- | --- |
-| | | | | |
-| | | | | |
-
-For each AI suggestion that was WRONG or misleading, describe it and how you
-verified it was wrong:
-<notes>
-
-## Part 3d: Verdict
-- Where our human diagnosis beat the AIs:
-- Where an AI genuinely helped:
-- What we learned about trusting AI to diagnose a live system it cannot see:
+| Member | Responsibility | Tools assigned for comparison | Natural prompt to use (not a recorded past prompt) |
+| --- | --- | --- | --- |
+| Aeint Kyi Pyar Soe (@AeintKyiPyarSoe) | Setup, tests, missing DNS zone file | ChatGPT + Gemini | “My `named-checkconf -z` says `/etc/bind/db.MISSING` cannot be found, but `db.novapeak.lab` exists. What should I check and how do I fix it?” |
