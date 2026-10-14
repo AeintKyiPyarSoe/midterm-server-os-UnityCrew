@@ -1,65 +1,41 @@
-# Submission Structure -- Server OS Midterm
+# Server OS Midterm — NovaPeak DNS and DHCP Repair
 
-Your group submits by pushing to your own GitHub repository. Your repository
-**must** follow this exact structure. Marks depend partly on it being correct
-and complete.
+## Group information
 
-## Required repository layout
+- **Group name:** Unity Crew
 
-```
-your-group-repo/
-  README.md              # this file, completed with your group info (below)
-  fixed-configs/         # copies of the configuration you repaired
-    named.conf.options
-    named.conf.local
-    db.<company>          # your fixed forward zone
-    db.<company>.rev      # your fixed reverse zone
-    dhcpd.conf
-    isc-dhcp-server       # the /etc/default/ file
-  INCIDENT_LOG.md        # how you found and proved each fault (Part 2)
-  AI_CRITIQUE.md         # AI declaration + comparison + verdict (Part 3)
-  session.log            # your recorded shell session (script -a)
-```
+- **Members:** 
+Aeint Kyi Pyar Soe – Nicole (6705140003)
+Khun Maung Aye – CK (6705140019) 
+Htet Soe Lin – Tyzon (6705140023)
+Thida Khaing – May (6705140024)
+Kaung Khant Htoo – Melly (6705140027)
+Lapatrada Tusitanond - Mingie (6705140060)
+- **Company:** NovaPeak
+- **Domain:** `novapeak.lab`
 
-Templates for `INCIDENT_LOG.md` and `AI_CRITIQUE.md` are provided in this
-handout folder -- copy them into your repo and fill them in. Do not invent your
-own format; use the templates.
+## Project Overview
 
-## Fill in your group information at the top of your repo README
+This project repairs and validates DNS and DHCP services for the serveros-midterm-lab01 scenario.
 
-- Group name / number:
-- Members (name + GitHub username, one per line):
-- Company / domain you were assigned:
-- Group id used with the checker:
+| Item | Configuration |
+|---|---|
+| Project | Server OS Midterm Project |
+| Scenario | serveros-midterm-lab01 |
+| Domain | novapeak.lab |
+| Network subnet | 192.168.19.0/24 |
+| Server interface | lan0 |
+| Authoritative DNS server | 192.168.19.10 |
+| DHCP lease pool | `192.168.19.104`–`192.168.19.144` |
+| Gateway | 192.168.19.1 |
+| Final build checker score | **25.0/25.0 (100%)** |
 
-## How to collect your fixed configs
+The objective was to restore correct DNS resolution and DHCP configuration so that the client could receive a valid lease, use the correct gateway and domain, and resolve the lab's internal hostnames.
 
-After you have repaired everything and the checker score is as high as you can
-get it, copy the real files into your repo's `fixed-configs/`:
+**Result:** The final build-phase checker passed all checks C1–C11, scoring 25.0 out of 25.0. This result applies to the build-phase checker and should not be interpreted as a confirmed overall course grade.
 
-```
-mkdir -p fixed-configs
-cp /etc/bind/named.conf.options fixed-configs/
-cp /etc/bind/named.conf.local   fixed-configs/
-cp /etc/bind/db.*               fixed-configs/
-cp /etc/dhcp/dhcpd.conf         fixed-configs/
-cp /etc/default/isc-dhcp-server fixed-configs/
-```
+## 2. Team Members and Contributions
 
-## How the checker score is captured
-
-Run the checker and save its output into your repo so your Part 1 result is
-recorded:
-
-```
-python3 /root/grading/check_lab.py --group lab01 --phase build | tee checker_result.txt
-```
-
-Commit `checker_result.txt` too.
-
-## Commit discipline
-
-- Commit as you go, not all at once at the end.
-- Each member commits their own work under their own git identity.
-- Clear commit messages ("fix reverse zone PTR", "add incident log entry for
-  the firewall fault") -- not "update".
+| Member | GitHub username | Documentation responsibility |
+|---|---|---|
+| Aeint Kyi Pyar Soe - 6705140003 | @AeintKyiPyarSoe | Setup overview, test results & DNS zone file problem |
