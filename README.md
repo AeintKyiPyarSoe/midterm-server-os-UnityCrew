@@ -42,3 +42,5 @@ The objective was to restore correct DNS resolution and DHCP configuration so th
 | Khun Maung Aye - 6705140019     | @KhunMaungAye    | API A record problem and DNS settings                |
 | Htet Soe Lin - 6705140023 | @Tyzon22 | DHCP DNS problem and DHCP settings |
 | Thida Khaing - 6705140024 | @Thida-Khaing-may | Firewall problem and troubleshooting |
+| Kaung Khant Htoo - 6705140027 | @kxkhantx | Final testing, AI critique and submission review |
+
