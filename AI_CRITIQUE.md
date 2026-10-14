@@ -27,3 +27,4 @@ Our incident log records how we checked the live system and verified the faults.
 
 1. The forward zone in `/etc/bind/named.conf.local` pointed to `/etc/bind/db.MISSING` instead of `/etc/bind/db.novapeak.lab`.
 2. The api A record pointed to 192.168.19.1 instead of `192.168.19.40`.
+3. DHCP advertised 8.8.8.8 instead of our internal DNS server `192.168.19.10`.
