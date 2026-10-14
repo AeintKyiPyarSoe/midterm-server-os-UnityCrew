@@ -44,3 +44,26 @@ The objective was to restore correct DNS resolution and DHCP configuration so th
 | Thida Khaing - 6705140024 | @Thida-Khaing-may | Firewall problem and troubleshooting |
 | Kaung Khant Htoo - 6705140027 | @kxkhantx | Final testing, AI critique and submission review |
 
+## 3. Repository Structure
+
+midterm-server-os-UnityCrew/
+├── README.md
+├── INCIDENT_LOG.md
+├── AI_CRITIQUE.md
+├── checker_result.txt
+├── session.log
+└── fixed-configs/
+    ├── db.novapeak.lab
+    ├── db.novapeak.lab.rev
+    ├── dhcpd.conf
+    ├── isc-dhcp-server
+    ├── named.conf.local
+    └── named.conf.options
+
+## 4. Main Problems Identified
+
+During troubleshooting, the team identified four configuration or service issues:
+
+The forward DNS zone referenced a missing file, /etc/bind/db.MISSING.
+
+The api DNS A record pointed to the wrong IP address.
