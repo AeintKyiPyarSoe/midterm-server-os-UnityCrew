@@ -45,7 +45,7 @@ The objective was to restore correct DNS resolution and DHCP configuration so th
 | Htet Soe Lin - 6705140023       | @Tyzon22          | DHCP DNS problem and DHCP settings                   |
 | Thida Khaing - 6705140024       | @Thida-Khaing-may | Firewall problem and troubleshooting                 |
 | Kaung Khant Htoo - 6705140027   | @kxkhantx         | Final testing, AI critique and submission review     |
-
+|Lapatrada Tusitanond - 6705140060| @Ming-200629.     | Reviewing documentation                              |
 ## 3. Repository Structure
 
 ```text
