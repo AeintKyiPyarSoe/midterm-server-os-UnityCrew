@@ -4,13 +4,16 @@
 
 - **Group name:** Unity Crew
 
-- **Members:**
-  * Aeint Kyi Pyar Soe – Nicole (6705140003)
-  * Khun Maung Aye – CK (6705140019)
-  * Htet Soe Lin – Tyzon (6705140023)
-  * Thida Khaing – May (6705140024)
-  * Kaung Khant Htoo – Melly (6705140027)
-  * Lapatrada Tusitanond – Mingie (6705140060)
+## Team Members
+
+| **Name** | **Student ID** | **GitHub Username** |
+|---|---|---|
+| Aeint Kyi Pyar Soe | 6705140003 | [AeintKyiPyarSoe](https://github.com/AeintKyiPyarSoe) |
+| Khun Maung Aye | 6705140019 | [KhunMaungAye](https://github.com/KhunMaungAye) |
+| Htet Soe Lin | 6705140023 | [Tyzon22](https://github.com/Tyzon22) |
+| Thida Khaing | 6705140024 | [Thida-Khaing-may](https://github.com/Thida-Khaing-may) |
+| Kaung Khant Htoo | 6705140027 | [kxkhantx](https://github.com/kxkhantx) |
+| Lapatrada Tusitanond | 6705140060 | [Ming-200629](https://github.com/Ming-200629) |
   
 - **Company:** NovaPeak
 - **Domain:** `novapeak.lab`
@@ -38,14 +41,15 @@ The objective was to restore correct DNS resolution and DHCP configuration so th
 
 ## 2. Team Members and Contributions
 
-| Member                          | GitHub username   | Documentation responsibility                         |
-| ------------------------------- | ----------------- | ---------------------------------------------------- |
-| Aeint Kyi Pyar Soe - 6705140003 | @AeintKyiPyarSoe  | Setup overview, test results & DNS zone file problem |
-| Khun Maung Aye - 6705140019     | @KhunMaungAye     | API A record problem and DNS settings                |
-| Htet Soe Lin - 6705140023       | @Tyzon22          | DHCP DNS problem and DHCP settings                   |
-| Thida Khaing - 6705140024       | @Thida-Khaing-may | Firewall problem and troubleshooting                 |
-| Kaung Khant Htoo - 6705140027   | @kxkhantx         | Final testing, AI critique and submission review     |
-|Lapatrada Tusitanond - 6705140060| @Ming-200629.     | Reviewing documentation                              |
+| Member | GitHub Username | Documentation Responsibility |
+|---|---|---|
+| Aeint Kyi Pyar Soe - 6705140003 | [@AeintKyiPyarSoe](https://github.com/AeintKyiPyarSoe) | Setup overview, test results & DNS zone file problem |
+| Khun Maung Aye - 6705140019 | [@KhunMaungAye](https://github.com/KhunMaungAye) | API A record problem and DNS settings |
+| Htet Soe Lin - 6705140023 | [@Tyzon22](https://github.com/Tyzon22) | DHCP DNS problem and DHCP settings |
+| Thida Khaing - 6705140024 | [@Thida-Khaing-may](https://github.com/Thida-Khaing-may) | Firewall problem and troubleshooting |
+| Kaung Khant Htoo - 6705140027 | [@kxkhantx](https://github.com/kxkhantx) | Final testing, AI critique and submission review |
+| Lapatrada Tusitanond - 6705140060 | [@Ming-200629](https://github.com/Ming-200629) | Reviewing documentation |  
+      
 ## 3. Repository Structure
 
 ```text
