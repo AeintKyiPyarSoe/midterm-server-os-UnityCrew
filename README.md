@@ -1,4 +1,4 @@
-# Server OS Midterm — NovaPeak DNS and DHCP Repair
+# Server OS Midterm — Group 1 (Tuesday Afternoon Class)
 
 ## Group information
 
